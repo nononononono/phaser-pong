@@ -1,7 +1,7 @@
 <script src="phaser.js"></script>
 <script type="text/javascript">
 
-    var game = new Phaser.Game(480, 640, Phaser.AUTO, '', { preload: preload, create: create, update: update});
+    var game = new Phaser.Game(480, 640, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 
     var playerBet;
     var computerBet;
@@ -25,11 +25,10 @@
 
 
     function create() {
-        
         //Скрываем курсор
         game.canvas.style.cursor = 'none';
         game.add.tileSprite(0, 0, 480, 640, 'background');
-        
+
         playerBet = createBet(game.world.centerX, 600);
         computerBet = createBet(game.world.centerX, 20);
         playerWintext = game.add.text(0, 0, 'You win: ' + playerWin, {fill: '#efefef'})
@@ -117,12 +116,12 @@
 
         if (_ball.x < _bet.x) {
             //  Шарик находится с левой стороны ракетки
-            diff = _bet.x -_ball.x;
+            diff = _bet.x - _ball.x;
             _ball.body.velocity.x = (-10 * diff);
         }
         else if (_ball.x > _bet.x) {
             //  Шарик находится с правой стороны ракетки
-            diff = _ball.x - _bet.x;
+            diff = _ball.x -_bet.x;
             _ball.body.velocity.x = (10 * diff);
         }
         else {
