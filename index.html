@@ -1,7 +1,7 @@
 <script src="phaser.js"></script>
 <script type="text/javascript">
 
-    var game = new Phaser.Game(480, 640, Phaser.AUTO, '', {preload: preload, create: create, update: update});
+    var game = new Phaser.Game(480, 640, Phaser.AUTO, '', { preload: preload, create: create, update: update});
 
     var playerBet;
     var computerBet;
@@ -25,9 +25,11 @@
 
 
     function create() {
+        
         //Скрываем курсор
         game.canvas.style.cursor = 'none';
         game.add.tileSprite(0, 0, 480, 640, 'background');
+        
         playerBet = createBet(game.world.centerX, 600);
         computerBet = createBet(game.world.centerX, 20);
         playerWintext = game.add.text(0, 0, 'You win: ' + playerWin, {fill: '#efefef'})
@@ -70,7 +72,7 @@
         return bet;
     }
 
-    function update() {
+    function update () {
         //Управляем ракеткой игрока
         playerBet.x = game.input.x;
 
@@ -84,10 +86,10 @@
         }
 
         //Управляем ракеткой компьютерного соперника
-        if (computerBet.x - ball.x < -15) {
+        if(computerBet.x - ball.x < -15) {
             computerBet.body.velocity.x = computerBetSpeed;
         }
-        else if (computerBet.x - ball.x > 15) {
+        else if(computerBet.x - ball.x > 15) {
             computerBet.body.velocity.x = -computerBetSpeed;
         }
         else {
@@ -102,7 +104,7 @@
         checkGoal();
     }
 
-    function ballHitsBet(_ball, _bet) {
+    function ballHitsBet (_ball, _bet) {
         //Эффект удара
         if (ball.y < 60) {
             emitter.gravity = 5;
@@ -115,7 +117,7 @@
 
         if (_ball.x < _bet.x) {
             //  Шарик находится с левой стороны ракетки
-            diff = _bet.x - _ball.x;
+            diff = _bet.x -_ball.x;
             _ball.body.velocity.x = (-10 * diff);
         }
         else if (_ball.x > _bet.x) {
@@ -148,7 +150,7 @@
             ball.body.velocity.y = 0;
             ballReleased = false;
         }
-
+        
     }
 
     function releaseBall() {
