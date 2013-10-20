@@ -10,7 +10,7 @@
 	var playerWin = 0;
 	var computerWin = 0;
 
-	var computerBetSpeed = 250;
+	var computerBetSpeed = 230;
 	var ballSpeed = 300;
 	var ballReleased = false;
 
@@ -43,8 +43,8 @@
 		ball.body.collideWorldBounds = true;
 		ball.body.bounce.setTo(1, 1);
 
+		//Инициализируем эмиттер частиц
 		emitter = game.add.emitter(0, 0, 200);
-
 		emitter.makeParticles('star');
 
 		game.input.onDown.add(releaseBall, this);
@@ -52,15 +52,15 @@
 
 	function particleBurst(x, y) {
 
-		//  Position the emitter where the mouse/touch event was
+		//Устанавливаем эмиттер частиц в точку x, y
 		emitter.x = x;
 		emitter.y = y;
 
-		//  The first parameter sets the effect to "explode" which means all particles are emitted at once
-		//  The second gives each particle a 2000ms lifespan
-		//  The third is ignored when using burst/explode mode
-		//  The final parameter (10) is how many particles will be emitted in this single burst
-		emitter.start(true, 200, null, 5);
+		//Певрый паарметр определяет, нужно ли выпускать все чатсицы в один момент (режим  explode, взрыв)
+		//Второй параметр устанавливает время жизни частицы в миллисекундах
+		//В режиме burst/explode третий параметр игнорируется
+		//Последний параметр определяет, сколько частиц будет выпущено при "взрыве"
+		emitter.start(true, 500, null, 5);
 
 	}
 
@@ -109,9 +109,11 @@
 	}
 
 	function ballHitsBet(_ball, _bet) {
+		//Увеличиваем счетчик ударов шарика
 		hits++;
-		if (hits == 1) {
-			nextLevel();
+		//С каждым третим ударом переходим на следующий уровень
+		if (hits == 3) {
+			nextLevel(); 
 		}
 		//Эффект удара
 		if (ball.y < 60) {
@@ -124,26 +126,19 @@
 		var diff = 0;
 
 		if (_ball.x < _bet.x) {
-			//  Шарик находится с левой стороны ракетки
+			//Шарик находится с левой стороны ракетки
 			diff = _bet.x - _ball.x;
-			_ball.body.velocity.x = (-10 * diff);
+			_ball.body.velocity.x = (-12 * diff);
 		}
 		else if (_ball.x > _bet.x) {
-			//  Шарик находится с правой стороны ракетки
+			//Шарик находится с правой стороны ракетки
 			diff = _ball.x - _bet.x;
-			_ball.body.velocity.x = (10 * diff);
+			_ball.body.velocity.x = (12 * diff);
 		}
 		else {
-			//  Шарик попал в центр ракетки, добавляем немножко трагической случайности его движению
+			//Шарик попал в центр ракетки, добавляем немножко трагической случайности его движению
 			_ball.body.velocity.x = 2 + Math.random() * 8;
 		}
-		if (_ball.body.velocity.x > 0) {
-			_ball.body.velocity.x += level * 20
-		}
-		else {
-			_ball.body.velocity.x -= level * 20
-		}
-
 	}
 
 	function checkGoal() {
@@ -169,6 +164,7 @@
 
 	function releaseBall() {
 		if (!ballReleased) {
+			//Увеличиваем скорость мячика с каждым ударом
 			ball.body.velocity.x = ballSpeed + level * 20;
 			ball.body.velocity.y = -ballSpeed - level * 20;
 			ballReleased = true;
@@ -187,7 +183,7 @@
 		hits = 0;
 		textLevel.setText('Level: ' + level)
 		showText('Level: ' + level, 2000);
-		computerBetSpeed += level * 20;
+		computerBetSpeed += level * 2;
 	}
 
 	function loose() {
