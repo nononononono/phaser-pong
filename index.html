@@ -29,7 +29,8 @@
 
 
 	function create() {
-		//Скрываем курсор
+		// Скрываем курсор
+        // Hide the cursor
 		game.canvas.style.cursor = 'none';
 		game.add.tileSprite(0, 0, 480, 640, 'background');
 		playerBet = createBet(game.world.centerX, 600);
@@ -43,7 +44,8 @@
 		ball.body.collideWorldBounds = true;
 		ball.body.bounce.setTo(1, 1);
 
-		//Инициализируем эмиттер частиц
+		// Инициализируем эмиттер частиц
+        // Initialise particle emitter
 		emitter = game.add.emitter(0, 0, 200);
 		emitter.makeParticles('star');
 
@@ -52,14 +54,22 @@
 
 	function particleBurst(x, y) {
 
-		//Устанавливаем эмиттер частиц в точку x, y
+		// Устанавливаем эмиттер частиц в точку x, y
+        // Set particle emitter in the point x, y
 		emitter.x = x;
 		emitter.y = y;
 
-		//Певрый паарметр определяет, нужно ли выпускать все чатсицы в один момент (режим  explode, взрыв)
-		//Второй параметр устанавливает время жизни частицы в миллисекундах
-		//В режиме burst/explode третий параметр игнорируется
-		//Последний параметр определяет, сколько частиц будет выпущено при "взрыве"
+		// Певрый паарметр определяет, нужно ли выпускать все чатсицы в один момент (режим  explode, взрыв)
+        // The first parameter determines whether or not to release all of the particles at one point (explode mode, burst)
+        
+		// Второй параметр устанавливает время жизни частицы в миллисекундах
+        // The second parameter sets the lifetime of the particle in milliseconds
+        
+		// В режиме burst/explode третий параметр игнорируется
+        // For burst/explode mode, the third parameter is ignored, so is set to null
+        
+		// Последний параметр определяет, сколько частиц будет выпущено при "взрыве"
+        // The last parameter determines how many units will be created at the "explosion"
 		emitter.start(true, 500, null, 5);
 
 	}
@@ -75,7 +85,8 @@
 	}
 
 	function update() {
-		//Управляем ракеткой игрока
+		// Управляем ракеткой игрока
+        // Manage player's racket
 		playerBet.x = game.input.x;
 
 		var playerBetHalfWidth = playerBet.width / 2;
@@ -86,7 +97,8 @@
 		else if (playerBet.x > game.width - playerBetHalfWidth) {
 			playerBet.x = game.width - playerBetHalfWidth;
 		}
-		//Управляем ракеткой компьютерного соперника
+		// Управляем ракеткой компьютерного соперника
+        // Manage computer's (opponent's) racket
 		if (computerBet.x - ball.x >= -15 && computerBet.x - ball.x <= 15) {
 			computerBet.body.velocity.x = 0;
 		}
@@ -100,22 +112,27 @@
 			computerBet.body.velocity.x = 0;
 		}
 
-		//Проверяем и обрабатываем столкновения мячика и ракеток
+		// Проверяем и обрабатываем столкновения мячика и ракеток
+        // Check for, and act upon ball/racket collisions
 		game.physics.collide(ball, playerBet, ballHitsBet, null, this);
 		game.physics.collide(ball, computerBet, ballHitsBet, null, this);
 
-		//Проверяем, не забил ли кто-то гол
+		// Проверяем, не забил ли кто-то гол
+        // Check if someone scored or not
 		checkGoal();
 	}
 
 	function ballHitsBet(_ball, _bet) {
-		//Увеличиваем счетчик ударов шарика
+		// Увеличиваем счетчик ударов шарика
+        // Increment the hits counter
 		hits++;
-		//С каждым третим ударом переходим на следующий уровень
+		// С каждым третим ударом переходим на следующий уровень
+        // Level-up at every third hit
 		if (hits == 3) {
 			nextLevel(); 
 		}
-		//Эффект удара
+		// Эффект удара
+        // Collision effect
 		if (ball.y < 60) {
 			emitter.gravity = 5;
 		} else if (ball.y > 580) {
@@ -126,17 +143,20 @@
 		var diff = 0;
 
 		if (_ball.x < _bet.x) {
-			//Шарик находится с левой стороны ракетки
+			// Шарик находится с левой стороны ракетки
+            // The ball is on the left hand side of the racket
 			diff = _bet.x - _ball.x;
 			_ball.body.velocity.x = (-12 * diff);
 		}
 		else if (_ball.x > _bet.x) {
-			//Шарик находится с правой стороны ракетки
+			// Шарик находится с правой стороны ракетки
+            // The ball is on the right hand side of the racket
 			diff = _ball.x - _bet.x;
 			_ball.body.velocity.x = (12 * diff);
 		}
 		else {
-			//Шарик попал в центр ракетки, добавляем немножко трагической случайности его движению
+			// Шарик попал в центр ракетки, добавляем немножко трагической случайности его движению
+            // The ball hit the center of the racket - add random movement
 			_ball.body.velocity.x = 2 + Math.random() * 8;
 		}
 	}
@@ -165,7 +185,8 @@
 	function releaseBall() {
 		if (!ballReleased) {
             var multiplier = game.rnd.realInRange(-1.0, 1.0)
-			//Увеличиваем скорость мячика с каждым ударом
+			// Увеличиваем скорость мячика с каждым ударом
+            // Increase the speed of the ball with each hit
 			ball.body.velocity.x = multiplier * (ballSpeed + level * 20);
 			ball.body.velocity.y = -(ballSpeed + level * 20);
 			ballReleased = true;
