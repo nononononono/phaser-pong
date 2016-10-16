@@ -146,7 +146,7 @@
 			nextLevel();
 			setBall();
 		} else if (ball.y > 625) {
-			loose();
+			lose();
 			setBall();
 		}
 	}
@@ -164,9 +164,10 @@
 
 	function releaseBall() {
 		if (!ballReleased) {
+            var multiplier = game.rnd.realInRange(-1.0, 1.0)
 			//Увеличиваем скорость мячика с каждым ударом
-			ball.body.velocity.x = ballSpeed + level * 20;
-			ball.body.velocity.y = -ballSpeed - level * 20;
+			ball.body.velocity.x = multiplier * (ballSpeed + level * 20);
+			ball.body.velocity.y = -(ballSpeed + level * 20);
 			ballReleased = true;
 		}
 	}
@@ -186,11 +187,12 @@
 		computerBetSpeed += level * 2;
 	}
 
-	function loose() {
+	function lose() {
+        var endMessage = 'Game over! Score: ' + level;
 		level = 1;
 		hits = 0;
 		textLevel.setText('Level: ' + level)
-		showText('You loose ', 2000);
+		showText(endMessage, 2000);
 		computerBetSpeed = 250;
 	}
 
